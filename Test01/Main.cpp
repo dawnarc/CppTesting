@@ -29,6 +29,11 @@ void _20190824()
 
 	clock_t start2 = clock();
 
+	/*for (std::list<int>::const_iterator i = lis.begin(); i != lis.end(); i++)
+	{
+		int val = *i;
+	}*/
+
 	for (std::list<int>::const_iterator i = lis.begin(); i != lis.end(); i++)
 	{
 		int val = *i;
@@ -38,9 +43,65 @@ void _20190824()
 	printf("list++++++ %dms\n", end2 - start2);		//2700ms
 }
 
+class C1
+{
+	char a;
+	char b;
+	int c;
+};
+
+class C2
+{
+	char a;
+	int c;
+	char b;
+};
+
+class C3
+{
+	char a;
+	char b;
+	int c;
+
+	void fun1() {}
+};
+
+class C4
+{
+	char a;
+	char b;
+	int c;
+
+	virtual void fun1() {}
+};
+
+//Byte Alignment
+void _20190905()
+{
+	int size1 = sizeof(C1);
+	printf("C1 size:%d\n", size1);
+
+	int size2 = sizeof(C2);
+	printf("C2 size:%d\n", size2);
+
+	int size3 = sizeof(C3);
+	printf("C3 size:%d\n", size3);
+
+	int size4 = sizeof(C4);
+	printf("C4 size:%d\n", size4);
+
+	/*output:
+	C1 size : 8
+	C2 size : 12
+	C3 size : 8
+	C4 size : 16
+	*/
+}
+
 int main(int argc, char* [])
 {
-	_20190824();
+	//_20190824();
+	_20190905();
 
 	system("pause");
 
