@@ -87,11 +87,11 @@ class C5
 //Byte Alignment
 void _20190905()
 {
-	printf("C1 size:%d\n", sizeof(C1));
-	printf("C2 size:%d\n", sizeof(C2));
-	printf("C3 size:%d\n", sizeof(C3));
-	printf("C4 size:%d\n", sizeof(C4));
-	printf("C5 size:%d\n", sizeof(C5));
+	printf("C1 size:%zd\n", sizeof(C1));
+	printf("C2 size:%zd\n", sizeof(C2));
+	printf("C3 size:%zd\n", sizeof(C3));
+	printf("C4 size:%zd\n", sizeof(C4));
+	printf("C5 size:%zd\n", sizeof(C5));
 
 	/*output(x64):
 	C1 size:8
@@ -132,6 +132,8 @@ class CB01
 
 class CC01
 {
+public:
+
 	long e;
 
 	virtual void fun01() {}
@@ -203,12 +205,140 @@ void _20190924()
 	*/
 }
 
+class CD01
+{
+public:
+
+	void Watch()
+	{
+		printf("CC01 Watch\n");
+	}
+
+	virtual void Listen()
+	{
+		printf("CC01 Listen\n");
+	}
+
+	virtual void Read()
+	{
+		printf("CC01 Read\n");
+	}
+};
+
+class CD02 : public CD01
+{
+public:
+
+	void Watch()
+	{
+		printf("CC02 Watch\n");
+	}
+
+	void Listen()
+	{
+		printf("CC02 Listen\n");
+	}
+
+	virtual void Read()
+	{
+		printf("CC02 Listen\n");
+	}
+};
+
+class CD03 : public CD02
+{
+public:
+
+	void Listen()
+	{
+		printf("CC03 Listen\n");
+	}
+
+	virtual void Read()
+	{
+		printf("CC03 Listen\n");
+	}
+};
+
+void _20191101()
+{
+	CC01 a1;
+	CC01 a2;
+	CC01& ref = a1;
+	ref.e = 11L;
+	ref = a2;
+	ref.e = 33L;
+
+	printf("output: %d  %d\n", a1.e, a2.e);
+	//output: 33  -858993460
+}
+
+void _20191212()
+{
+	CD02 C1;
+	C1.Watch();
+	C1.Listen();
+	C1.Read();
+
+	/* output:
+
+	CC02 Watch
+	CC02 Listen
+	CC02 Listen
+
+	*/
+
+	CD02* C2 = new CD02;
+	C2->Watch();
+	C2->Listen();
+	C2->Read();
+	delete C2;
+
+	/* output:
+
+	CC02 Watch
+	CC02 Listen
+	CC02 Listen
+
+	*/
+
+	CD01* C3 = new CD02;
+	C3->Watch();
+	C3->Listen();
+	C3->Read();
+	delete C3;
+
+	/* output:
+
+	CC01 Watch
+	CC02 Listen
+	CC02 Listen
+
+	*/
+
+	CD02* C4 = new CD03;
+	C4->Watch();
+	C4->Listen();
+	C4->Read();
+	delete C4;
+
+	/* output:
+	
+	CC02 Watch
+	CC03 Listen
+	CC03 Listen
+
+	*/
+}
+
 int main(int argc, char* args[])
 {
 	//_20190824();
 	//_20190905();
 	//_20190908();
-	_20190924();
+	//_20190924();
+	//_20191101();
+	_20191212();
 
 	system("pause");
 
