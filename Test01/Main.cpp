@@ -139,6 +139,7 @@ public:
 	virtual void fun01() {}
 };
 
+//virtual function memory model
 void _20190908()
 {
 	CA02 obj01;
@@ -205,6 +206,20 @@ void _20190924()
 	*/
 }
 
+//re-assign for reference
+void _20191101()
+{
+	CC01 a1;
+	CC01 a2;
+	CC01& ref = a1;
+	ref.e = 11L;
+	ref = a2;
+	ref.e = 33L;
+
+	printf("output: %d  %d\n", a1.e, a2.e);
+	//output: 33  -858993460
+}
+
 class CD01
 {
 public:
@@ -241,7 +256,7 @@ public:
 
 	virtual void Read()
 	{
-		printf("CC02 Listen\n");
+		printf("CC02 Read\n");
 	}
 };
 
@@ -256,23 +271,11 @@ public:
 
 	virtual void Read()
 	{
-		printf("CC03 Listen\n");
+		printf("CC03 Read\n");
 	}
 };
 
-void _20191101()
-{
-	CC01 a1;
-	CC01 a2;
-	CC01& ref = a1;
-	ref.e = 11L;
-	ref = a2;
-	ref.e = 33L;
-
-	printf("output: %d  %d\n", a1.e, a2.e);
-	//output: 33  -858993460
-}
-
+//virtual function usage cases
 void _20191212()
 {
 	CD02 C1;
@@ -284,9 +287,11 @@ void _20191212()
 
 	CC02 Watch
 	CC02 Listen
-	CC02 Listen
+	CC02 Read
 
 	*/
+
+	printf("\n");
 
 	CD02* C2 = new CD02;
 	C2->Watch();
@@ -298,9 +303,11 @@ void _20191212()
 
 	CC02 Watch
 	CC02 Listen
-	CC02 Listen
+	CC02 Read
 
 	*/
+
+	printf("\n");
 
 	CD01* C3 = new CD02;
 	C3->Watch();
@@ -312,9 +319,11 @@ void _20191212()
 
 	CC01 Watch
 	CC02 Listen
-	CC02 Listen
+	CC02 Read
 
 	*/
+
+	printf("\n");
 
 	CD02* C4 = new CD03;
 	C4->Watch();
