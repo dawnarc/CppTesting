@@ -340,6 +340,13 @@ void _20191212()
 	*/
 }
 
+//base variable type value range
+void _20191212_02()
+{
+	unsigned char a = 25U - 50;
+	printf("%d", a);	//output: 231
+}
+
 int main(int argc, char* args[])
 {
 	//_20190824();
@@ -347,7 +354,8 @@ int main(int argc, char* args[])
 	//_20190908();
 	//_20190924();
 	//_20191101();
-	_20191212();
+	//_20191212();
+	_20191212_02();
 
 	system("pause");
 
