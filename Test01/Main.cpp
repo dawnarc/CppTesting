@@ -3,6 +3,8 @@
 #include <list>
 #include <vector>
 #include <time.h>
+#include <mutex>
+#include <memory>
 
 //performace testing for iterating between vector and list.
 void _20190824()
@@ -347,6 +349,106 @@ void _20191212_02()
 	printf("%d", a);	//output: 231
 }
 
+class baz
+{
+	//virtual void fun() {}
+public:
+
+	int i = 0;
+};
+
+baz baz_val;
+
+class c4
+{
+	//virtual void fun() {}
+public:
+
+	int i = 0;
+	bool b = false;
+};
+
+class foo //: public base
+{
+public:
+
+	std::mutex lock;
+
+	int a;
+	float arr1[1024] = { 0.f };
+	int b;
+	int c;
+	float arr2[1024] = { 0.f };
+	int d;
+	float arr3[1024] = { 0.f };
+
+	void fun1(std::string str)
+	{
+		std::lock_guard<std::mutex> scope_lock(lock);
+		printf("fun1");
+
+		float arr1[1024] = { 0.f };
+	}
+
+	void fun2()
+	{
+		std::lock_guard<std::mutex> scope_lock(lock);
+
+		int a = 2;
+		printf("fun2");
+
+		float arr1[1024] = { 0.f };
+	}
+};
+
+class bar //: public base
+{
+	std::mutex lock2;
+
+	float arr[1024] = { 0.f };
+
+public:
+
+	void fun3()
+	{
+		int arr1[1024] = { 0 };
+	}
+
+	void fun4(baz& b)
+	{
+		float arr1[1024] = { 0.f };
+		std::lock_guard<std::mutex> scope_lock(lock2);
+		b.i = 111;
+		printf("%d", b.i);
+	}
+};
+
+std::shared_ptr<bar> bar_ptr2;
+
+void _20200703()
+{
+	foo* f = new foo();
+	//foo f;
+	std::shared_ptr<foo> x(f);
+
+	int arr1[1024] = { 0 };
+
+	bar_ptr2 = std::shared_ptr<bar>((bar*)x.get());
+	int arr2[1024] = { 0 };
+	//b += 16;
+	//bar* b = static_cast<bar*>(f);
+	//b->fun3();
+
+	/*foo f;
+	bar* bar_ptr = (bar*)&f;*/
+
+	float fff = 1.f;
+
+	bar_ptr2->fun4(baz_val);
+	int arr3[1024] = { 0 };
+	int i = 0;
+}
+
 int main(int argc, char* args[])
 {
 	//_20190824();
@@ -355,9 +457,11 @@ int main(int argc, char* args[])
 	//_20190924();
 	//_20191101();
 	//_20191212();
-	_20191212_02();
+	//_20191212_02();
+	_20200703();
 
 	system("pause");
 
 	return 0;
 }
+
