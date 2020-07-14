@@ -5,6 +5,9 @@
 #include <time.h>
 #include <atomic>
 #include <queue>
+#include <mutex>
+#include <memory>
+
 
 //performace testing for iterating between vector and list.
 void _20190824()
@@ -20,7 +23,7 @@ void _20190824()
 	}
 
 	clock_t start1 = clock();
-	
+
 	for (int i = 0; i < vec.size(); i++)
 	{
 		int val = vec[i];
@@ -156,7 +159,7 @@ void _20190908()
 
 	//error C2683:  'dynamic_cast': 'CA02' is not a polymorphic type
 	//CA03* ptr04 = dynamic_cast<CA03*>(ptr01);
-	
+
 	CA01* ptr05 = dynamic_cast<CA01*>(ptr01);
 	printf("%d\n", ptr05 ? 1 : 0);	//output:1
 
@@ -334,7 +337,7 @@ void _20191212()
 	delete C4;
 
 	/* output:
-	
+
 	CC02 Watch
 	CC03 Listen
 	CC03 Listen
@@ -430,6 +433,107 @@ void _20200626_2()
 	que.push(Stru);
 }
 
+class baz
+{
+	//virtual void fun() {}
+public:
+
+	int i = 0;
+};
+
+baz baz_val;
+
+class c4
+{
+	//virtual void fun() {}
+public:
+
+	int i = 0;
+	bool b = false;
+};
+
+class foo //: public base
+{
+public:
+
+	std::mutex lock;
+
+	int a;
+	/*float arr1[1024] = { 0.f };
+	int b;
+	int c;
+	float arr2[1024] = { 0.f };
+	int d;
+	float arr3[1024] = { 0.f };*/
+
+	void fun1(std::string str)
+	{
+		//std::lock_guard<std::mutex> scope_lock(lock);
+		printf("fun1");
+	}
+
+	void fun2()
+	{
+		//std::lock_guard<std::mutex> scope_lock(lock);
+
+		//int a = 2;
+
+		printf("fun2");
+	}
+
+	int b = 1;
+
+	void fun3()
+	{
+		b = 444;
+		printf("%f", b);
+	}
+};
+
+class bar //: public base
+{
+	std::mutex lock2;
+
+	//float arr[1024] = { 0.f };
+
+public:
+
+	void fun3()
+	{
+	}
+
+	void fun4(baz& b)
+	{
+		float arr1[1024] = { 0.f };
+		std::lock_guard<std::mutex> scope_lock(lock2);
+		b.i = 111;
+		printf("%d", b.i);
+	}
+};
+
+std::shared_ptr<bar> bar_ptr2;
+
+foo* initfun()
+{
+	float arr[1024] = { 0.f };
+	int a = 1;
+	return (foo*)&a;
+}
+
+void _20200703()
+{
+	//foo* f = new foo();
+	//foo f;
+	/*std::shared_ptr<foo> x(f);
+
+	bar_ptr2 = std::shared_ptr<bar>((bar*)x.get());
+
+	bar_ptr2->fun4(baz_val);*/
+
+	foo* f = initfun();
+	f->fun3();
+}
+
 int main(int argc, char* args[])
 {
 	//_20190824();
@@ -440,11 +544,13 @@ int main(int argc, char* args[])
 	//_20191212();
 	//_20191212_02();
 	//_20200610();
-	_20200625();
+	//_20200625();
 	//_20200626();
-	//_20200626_2();
-	
-	//system("pause");
+	//_20200626_2();	
+	//_20200703();
+
+	system("pause");
 
 	return 0;
 }
+
