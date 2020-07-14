@@ -3,6 +3,8 @@
 #include <list>
 #include <vector>
 #include <time.h>
+#include <atomic>
+#include <queue>
 
 //performace testing for iterating between vector and list.
 void _20190824()
@@ -347,6 +349,87 @@ void _20191212_02()
 	printf("%d", a);	//output: 231
 }
 
+void _20200610()
+{
+	char* data = (char*)malloc(2000);
+
+	for(int i = 0; i < 8000; i++)
+	{
+		char val = data[i];
+	}
+}
+
+void _20200625()
+{
+	const int32_t count = 10000000;
+	
+	/*volatile*/ int32_t val1 = 0;
+	
+	clock_t start1 = clock();
+	for(int i = 0; i < count; i++)
+	{
+		val1++;
+	}
+	clock_t end1 = clock();
+
+	printf("cost1: %dms\n", end1 - start1);
+
+	std::atomic<std::int32_t> val2 = 0;
+
+	clock_t start2 = clock();
+	for (int i = 0; i < count; i++)
+	{
+		val2++;
+	}
+	clock_t end2 = clock();
+	printf("cost2: %dms\n", end2 - start2);
+}
+
+struct TestStruct001
+{
+	TestStruct001()
+	{
+		printf("constructor\n");
+	}
+	
+	TestStruct001(const TestStruct001& Ref)
+	{
+		printf("copy constructor\n");
+		val = Ref.val;
+	}
+
+	int val;
+};
+
+void TestFun001(TestStruct001& Ref)
+{
+	TestStruct001 Stru001;
+	Stru001.val = 2222;
+	
+	printf("aaaa\n");
+	Ref = Stru001;
+	printf("bbbb\n");
+}
+
+void _20200626()
+{
+	TestStruct001 Stru;
+	Stru.val = 1111;
+
+	printf("cccc %d\n", Stru.val);
+	TestFun001(Stru);
+	printf("dddd %d\n", Stru.val);
+
+	TestStruct001 Stru2 = Stru;
+}
+
+void _20200626_2()
+{
+	TestStruct001 Stru;
+	std::queue<TestStruct001> que;
+	que.push(Stru);
+}
+
 int main(int argc, char* args[])
 {
 	//_20190824();
@@ -355,9 +438,13 @@ int main(int argc, char* args[])
 	//_20190924();
 	//_20191101();
 	//_20191212();
-	_20191212_02();
-
-	system("pause");
+	//_20191212_02();
+	//_20200610();
+	_20200625();
+	//_20200626();
+	//_20200626_2();
+	
+	//system("pause");
 
 	return 0;
 }
